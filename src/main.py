@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 
 
 def f1(p):
@@ -107,6 +108,88 @@ def plot_hc_evolution_3():
             plt.arrow(xs[i], ys[i], dx=(xs[i+1]-xs[i])/2, dy=(ys[i+1]-ys[i])/2, head_width=0.4, color="black")
     plt.show()
 
+def get_temperature(iteration, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle):
+    T = (1 + np.cos(iteration * 2*np.pi / num_iterations_per_cycle))/2 * (max_temperature - min_temperature)
+    return T * (1-iteration / max_iteration) + min_temperature
 
-plot_hc_evolution_3()
+def plot_temperature_function(max_iteration, min_temperature, max_temperature, num_iterations_per_cycle):
+    xs = list(range(max_iteration))
+    ys = []
+    for i in xs:
+        ys.append(get_temperature(i, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle))
+    plt.plot(xs, ys)
+    plt.show()
+
+def optimize_with_sa(f, p, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle):
+    found_points = [p]
+    for i in range(max_iteration):
+        T = get_temperature(i, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle)
+        neighbors_list = get_neighbors(p)
+        neighbor = random.choice(neighbors_list)
+        if f(p) < f(neighbor):
+            jump_probability = 1
+        else:
+            jump_probability = np.exp((f(neighbor) - f(p))/T)
+        if random.random() < jump_probability:
+            p = neighbor
+        found_points.append(p)
+    return found_points
+
+def plot_sa_evolution_1():
+    random.seed(0)
+    starting_point = (70, 80)
+    max_iteration = 1000
+    min_temperature = 0.0001
+    max_temperature = 0.1
+    num_iterations_per_cycle = 100
+    plot_function(f1)
+    found_points = optimize_with_sa(f1, starting_point, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle)
+    found_points = found_points[::2]
+    xs = np.array([p[0] for p in found_points])
+    ys = np.array([p[1] for p in found_points])
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Simulated Annealing: Function $f_1$")
+    plt.show()
+
+def plot_sa_evolution_2():
+    random.seed(0)
+    starting_point = (70, 80)
+    max_iteration = 1000
+    min_temperature = 0.1
+    max_temperature = 1
+    num_iterations_per_cycle = 100
+    plot_function(f2)
+    found_points = optimize_with_sa(f2, starting_point, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle)
+    found_points = found_points[::2]
+    xs = np.array([p[0] for p in found_points])
+    ys = np.array([p[1] for p in found_points])
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Simulated Annealing: Function $f_2$")
+    plt.show()
+
+def plot_sa_evolution_3():
+    random.seed(0)
+    starting_point = (70, 80)
+    max_iteration = 3000
+    min_temperature = 0.1
+    max_temperature = 1
+    num_iterations_per_cycle = 100
+    plot_function(f3)
+    found_points = optimize_with_sa(f3, starting_point, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle)
+    found_points = found_points[::2]
+    xs = np.array([p[0] for p in found_points])
+    ys = np.array([p[1] for p in found_points])
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Simulated Annealing: Function $f_3$")
+    plt.show()
+
+plot_sa_evolution_1()
+plot_sa_evolution_2()
+plot_sa_evolution_3()
 
