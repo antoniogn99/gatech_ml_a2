@@ -189,7 +189,92 @@ def plot_sa_evolution_3():
     plt.title(r"Simulated Annealing: Function $f_3$")
     plt.show()
 
-plot_sa_evolution_1()
-plot_sa_evolution_2()
-plot_sa_evolution_3()
+def crossover(parent1, parent2):
+    return [(parent1[0], parent2[1]), (parent2[0], parent1[1])]
+
+def mutation(point):
+    dx = random.randint(-5, 5)
+    dy = random.randint(-5, 5)
+    new_point = [point[0]+dx, point[1]+dy]
+    if new_point[0] < 0:
+        new_point[0] = 0
+    if new_point[1] < 0:
+        new_point[1] = 0
+    if new_point[0] > 99:
+        new_point[0] = 99
+    if new_point[1] > 99:
+        new_point[1] = 99
+    return new_point
+
+def optimize_with_ga(f, mutation_prob, num_iterations,num_points, num_points_to_keep):
+    points = [(random.randint(1, 99), random.randint(1, 99)) for _ in range(num_points)]
+    best_points = []
+    for _ in range(num_iterations):
+        new_points = []
+        scores = [f(p) for p in points]
+        best_points.append(points[scores.index(max(scores))])
+        points_scores = list(zip(points, scores))
+        points_scores.sort(key=lambda x: x[1], reverse=True)
+        points = [x[0] for x in points_scores]
+        new_points += points[:num_points_to_keep]
+        for _ in range((num_points-num_points_to_keep)//2):
+            parent1, parent2 = random.choices(points, scores, k=2)
+            child1, child2 = crossover(parent1, parent2)
+            if random.random() < mutation_prob:
+                child1 = mutation(child1)
+            if random.random() < mutation_prob:
+                child2 = mutation(child2)
+            new_points += [child1, child2]
+        points = new_points
+    return best_points
+
+def plot_ga_evolution_1():
+    random.seed(0)
+    mutation_prob = 0.1
+    num_iterations = 200
+    num_points = 10
+    num_points_to_keep = 2
+    plot_function(f1)
+    found_points = optimize_with_ga(f1, mutation_prob, num_iterations, num_points, num_points_to_keep)
+    xs = np.array([p[0] for p in found_points])
+    ys = np.array([p[1] for p in found_points])
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Genetic Algorithm: Function $f_1$")
+    plt.show()
+
+def plot_ga_evolution_2():
+    random.seed(0)
+    mutation_prob = 0.1
+    num_iterations = 200
+    num_points = 10
+    num_points_to_keep = 2
+    plot_function(f2)
+    found_points = optimize_with_ga(f2, mutation_prob, num_iterations, num_points, num_points_to_keep)
+    xs = np.array([p[0] for p in found_points])
+    ys = np.array([p[1] for p in found_points])
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Genetic Algorithm: Function $f_2$")
+    plt.show()
+
+def plot_ga_evolution_3():
+    random.seed(0)
+    mutation_prob = 0.1
+    num_iterations = 200
+    num_points = 10
+    num_points_to_keep = 2
+    plot_function(f3)
+    found_points = optimize_with_ga(f3, mutation_prob, num_iterations, num_points, num_points_to_keep)
+    xs = np.array([p[0] for p in found_points])
+    ys = np.array([p[1] for p in found_points])
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Genetic Algorithm: Function $f_3$")
+    plt.show()
+
+plot_ga_evolution_3()
 
