@@ -347,8 +347,121 @@ def plot_ga_evolution_3_aux():
     xs = np.array([p[0] for p in last_generation])
     ys = np.array([p[1] for p in last_generation])
     plt.plot(xs, ys, color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Genetic Algorithm: Function $f_2$")
+    plt.title(r"Genetic Algorithm: Function $f_3$")
     plt.show()
 
-plot_ga_evolution_3()
+
+class Region:
+    def __init__(self, balls_centers=None, balls_radio=1):
+        self.balls_centers = balls_centers
+        self.balls_radio = balls_radio
+    
+    def contains(self, point):
+        if self.balls_centers is None:
+            return True
+        for c in self.balls_centers:
+            if (point[0]-c[0])**2 + (point[1]-c[1])**2 < self.balls_radio**2:
+                return True
+        return False
+    
+    def get_contained_points(self):
+        points = [(i, j) for i in range(100) for j in range(100)]
+        return [p for p in points if self.contains(p)]
+    
+    def generate_uniformly(self, k):
+        points = self.get_contained_points()
+        return random.choices(points, k=k)
+    
+    def plot(self, color):
+        points = self.get_contained_points()
+        xs = [p[0] for p in points]
+        ys = [p[1] for p in points]
+        plt.plot(xs, ys, "s", color=color)
+
+def optimize_with_mimic(f, num_iterations, num_points, initial_balls_radio, percentil):
+    regions_list = []
+    thresholds_list = [0]
+    region = Region()
+    for i in range(num_iterations):
+        balls_radio = -i*initial_balls_radio/(num_iterations-1) + initial_balls_radio + 1
+        points = region.generate_uniformly(num_points)
+        scores = [f(p) for p in points]
+        threshold = np.percentile(scores, percentil)
+        thresholds_list.append(threshold)
+        best_points = [points[i] for i in range(num_points) if scores[i] > threshold]
+        region = Region(best_points, balls_radio)
+        regions_list.append(region)
+    return regions_list, thresholds_list
+
+def plot_mimic_evolution_1():
+    random.seed(0)
+    num_iterations = 50
+    num_points = 40
+    percentil = 50
+    balls_radio = 20
+    regions_list, thresholds_list = optimize_with_mimic(f1, num_iterations, num_points, balls_radio, percentil)
+    points = [(i, j) for i in range(100) for j in range(100)]
+    values = []
+    for p in points:
+        index = num_iterations-1
+        while index > 0 and not regions_list[index].contains(p):
+            index -= 1
+        values.append(thresholds_list[index])
+    xs = [p[0] for p in points]
+    ys = [p[1] for p in points]
+    plt.scatter(xs, ys, c=values, cmap="plasma")
+    plt.colorbar()
+    plt.xlim([0, 100])
+    plt.ylim([0, 100])
+    plt.title(r"MIMIC: Function $f_1$")
+    plt.show()
+
+
+def plot_mimic_evolution_2():
+    random.seed(0)
+    num_iterations = 25
+    num_points = 100
+    percentil = 50
+    balls_radio = 20
+    regions_list, thresholds_list = optimize_with_mimic(f2, num_iterations, num_points, balls_radio, percentil)
+    points = [(i, j) for i in range(100) for j in range(100)]
+    values = []
+    for p in points:
+        index = num_iterations-1
+        while index > 0 and not regions_list[index].contains(p):
+            index -= 1
+        values.append(thresholds_list[index])
+    xs = [p[0] for p in points]
+    ys = [p[1] for p in points]
+    plt.scatter(xs, ys, c=values, cmap="plasma")
+    plt.colorbar()
+    plt.xlim([0, 100])
+    plt.ylim([0, 100])
+    plt.title(r"MIMIC: Function $f_2$")
+    plt.show()
+
+def plot_mimic_evolution_3():
+    random.seed(0)
+    num_iterations = 100
+    num_points = 1000
+    percentil = 75
+    balls_radio = 15
+    regions_list, thresholds_list = optimize_with_mimic(f3, num_iterations, num_points, balls_radio, percentil)
+    points = [(i, j) for i in range(100) for j in range(100)]
+    values = []
+    for p in points:
+        index = num_iterations-1
+        while index > 0 and not regions_list[index].contains(p):
+            index -= 1
+        values.append(thresholds_list[index])
+    xs = [p[0] for p in points]
+    ys = [p[1] for p in points]
+    plt.scatter(xs, ys, c=values, cmap="plasma")
+    plt.colorbar()
+    plt.xlim([0, 100])
+    plt.ylim([0, 100])
+    plt.title(r"MIMIC: Function $f_3$")
+    plt.show()
+
+plot_mimic_evolution_3()
 
