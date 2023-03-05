@@ -73,9 +73,10 @@ def plot_hc_evolution_1():
     print(found_points)
     xs = np.array([p[0] for p in found_points])
     ys = np.array([p[1] for p in found_points])
-    plt.plot(xs, ys, color="black", linewidth=1)
-    for i in range(0, len(xs)-1):
-        plt.arrow(xs[i], ys[i], dx=(xs[i+1]-xs[i])/2, dy=(ys[i+1]-ys[i])/2, head_width=1, color="black")
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Hill Climbing optimizing function $f_1$")
     plt.show()
 
 def plot_hc_evolution_2():
@@ -84,16 +85,17 @@ def plot_hc_evolution_2():
     found_points = found_points[::5]
     xs = np.array([p[0] for p in found_points])
     ys = np.array([p[1] for p in found_points])
-    plt.plot(xs, ys, color="black", linewidth=1)
-    for i in range(0, len(xs)-1):
-        plt.arrow(xs[i], ys[i], dx=(xs[i+1]-xs[i])/2, dy=(ys[i+1]-ys[i])/2, head_width=1, color="black")
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
     found_points = optimize_with_hc(f2, (90, 50))
     found_points = found_points[::5]
     xs = np.array([p[0] for p in found_points])
     ys = np.array([p[1] for p in found_points])
-    plt.plot(xs, ys, color="black", linewidth=1)
-    for i in range(0, len(xs)-1):
-        plt.arrow(xs[i], ys[i], dx=(xs[i+1]-xs[i])/2, dy=(ys[i+1]-ys[i])/2, head_width=1, color="black")
+    plt.plot(xs, ys, color="black", linewidth=0.3)
+    plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Hill Climbing optimizing function $f_2$")
     plt.show()
 
 def plot_hc_evolution_3():
@@ -103,9 +105,10 @@ def plot_hc_evolution_3():
         found_points = optimize_with_hc(f3, p)
         xs = np.array([p[0] for p in found_points])
         ys = np.array([p[1] for p in found_points])
-        plt.plot(xs, ys, color="black", linewidth=0.2)
-        for i in range(0, len(xs)-1):
-            plt.arrow(xs[i], ys[i], dx=(xs[i+1]-xs[i])/2, dy=(ys[i+1]-ys[i])/2, head_width=0.4, color="black")
+        plt.plot(xs, ys, color="black", linewidth=0.3)
+        plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
+        plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
+    plt.title(r"Hill Climbing optimizing function $f_3$")
     plt.show()
 
 def get_temperature(iteration, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle):
@@ -117,7 +120,9 @@ def plot_temperature_function(max_iteration, min_temperature, max_temperature, n
     ys = []
     for i in xs:
         ys.append(get_temperature(i, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle))
-    plt.plot(xs, ys)
+    plt.plot(xs, ys, ".-")
+    plt.ylabel(r"Temperature $T$")
+    plt.xlabel(r"Iteration $i$")
     plt.show()
 
 def optimize_with_sa(f, p, max_iteration, min_temperature, max_temperature, num_iterations_per_cycle):
@@ -150,7 +155,7 @@ def plot_sa_evolution_1():
     plt.plot(xs, ys, color="black", linewidth=0.3)
     plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
     plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Simulated Annealing: Function $f_1$")
+    plt.title(r"Simulated Annealing optimizing function $f_1$")
     plt.show()
 
 def plot_sa_evolution_2():
@@ -168,7 +173,7 @@ def plot_sa_evolution_2():
     plt.plot(xs, ys, color="black", linewidth=0.3)
     plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
     plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Simulated Annealing: Function $f_2$")
+    plt.title(r"Simulated Annealing optimizing function  $f_2$")
     plt.show()
 
 def plot_sa_evolution_3():
@@ -186,7 +191,7 @@ def plot_sa_evolution_3():
     plt.plot(xs, ys, color="black", linewidth=0.3)
     plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
     plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Simulated Annealing: Function $f_3$")
+    plt.title(r"Simulated Annealing optimizing function $f_3$")
     plt.show()
 
 def crossover(parent1, parent2):
@@ -241,7 +246,7 @@ def plot_ga_evolution_1():
     plt.plot(xs, ys, color="black", linewidth=0.3)
     plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
     plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Genetic Algorithm: Function $f_1$")
+    plt.title(r"Genetic Algorithm optimizing function $f_1$")
     plt.show()
 
 def plot_ga_evolution_2():
@@ -257,7 +262,7 @@ def plot_ga_evolution_2():
     plt.plot(xs, ys, color="black", linewidth=0.3)
     plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
     plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Genetic Algorithm: Function $f_2$")
+    plt.title(r"Genetic Algorithm optimizing function $f_2$")
     plt.show()
 
 def plot_ga_evolution_3():
@@ -273,7 +278,7 @@ def plot_ga_evolution_3():
     plt.plot(xs, ys, color="black", linewidth=0.3)
     plt.plot(xs[-1], ys[-1], color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
     plt.plot(xs[0], ys[0], color='black',marker='o',markerfacecolor='white',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Genetic Algorithm: Function $f_3$")
+    plt.title(r"Genetic Algorithm optimizing function $f_3$")
     plt.show()
 
 def optimize_with_ga_aux(f, mutation_prob, num_iterations,num_points, num_points_to_keep):
@@ -313,7 +318,7 @@ def plot_ga_evolution_1_aux():
     xs = np.array([p[0] for p in last_generation])
     ys = np.array([p[1] for p in last_generation])
     plt.plot(xs, ys, color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Genetic Algorithm: Function $f_1$")
+    plt.title(r"Genetic Algorithm optimizing function $f_1$")
     plt.show()
 
 def plot_ga_evolution_2_aux():
@@ -330,7 +335,7 @@ def plot_ga_evolution_2_aux():
     xs = np.array([p[0] for p in last_generation])
     ys = np.array([p[1] for p in last_generation])
     plt.plot(xs, ys, color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Genetic Algorithm: Function $f_2$")
+    plt.title(r"Genetic Algorithm optimizing function $f_2$")
     plt.show()
 
 def plot_ga_evolution_3_aux():
@@ -347,7 +352,7 @@ def plot_ga_evolution_3_aux():
     xs = np.array([p[0] for p in last_generation])
     ys = np.array([p[1] for p in last_generation])
     plt.plot(xs, ys, color='white',marker='o',markerfacecolor='black',linestyle='',markersize=5, markeredgewidth=0.6)
-    plt.title(r"Genetic Algorithm: Function $f_3$")
+    plt.title(r"Genetic Algorithm optimizing function $f_3$")
     plt.show()
 
 
@@ -413,7 +418,7 @@ def plot_mimic_evolution_1():
     plt.colorbar()
     plt.xlim([0, 100])
     plt.ylim([0, 100])
-    plt.title(r"MIMIC: Function $f_1$")
+    plt.title(r"MIMIC optimizing function $f_1$")
     plt.show()
 
 
@@ -437,13 +442,21 @@ def plot_mimic_evolution_2():
     plt.colorbar()
     plt.xlim([0, 100])
     plt.ylim([0, 100])
-    plt.title(r"MIMIC: Function $f_2$")
+    plt.title(r"MIMIC optimizing function $f_2$")
+    plt.show()
+    new_points = regions_list[14].get_contained_points()
+    xs = [p[0] for p in new_points]
+    ys = [p[1] for p in new_points]
+    plt.plot(xs, ys, "s")
+    plt.xlim([0, 100])
+    plt.ylim([0, 100])
+    plt.title(r"$P_{\theta_{14}}$ when optimizing $f_2$ ($\theta_{14}=0.41$)")
     plt.show()
 
 def plot_mimic_evolution_3():
     random.seed(0)
     num_iterations = 100
-    num_points = 1000
+    num_points = 100
     percentil = 75
     balls_radio = 15
     regions_list, thresholds_list = optimize_with_mimic(f3, num_iterations, num_points, balls_radio, percentil)
@@ -460,7 +473,7 @@ def plot_mimic_evolution_3():
     plt.colorbar()
     plt.xlim([0, 100])
     plt.ylim([0, 100])
-    plt.title(r"MIMIC: Function $f_3$")
+    plt.title(r"MIMIC optimizing function $f_3$")
     plt.show()
 
 plot_mimic_evolution_3()
